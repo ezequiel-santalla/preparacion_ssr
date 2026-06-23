@@ -1,0 +1,88 @@
+{
+  "info": {
+    "name": "S1 - Streams Tenis",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Jugadores activos ordenados por puntos",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players"] } }
+    },
+    {
+      "name": "2a. Jugadores por pais - SPAIN",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/country/SPAIN", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "country", "SPAIN"] } }
+    },
+    {
+      "name": "2b. Jugadores por pais - RUSSIA",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/country/RUSSIA", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "country", "RUSSIA"] } }
+    },
+    {
+      "name": "3a. Top 3 jugadores",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/top/3", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "top", "3"] } }
+    },
+    {
+      "name": "3b. Top 5 jugadores",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/top/5", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "top", "5"] } }
+    },
+    {
+      "name": "4. Promedio de puntos activos",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/average", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "average"] } }
+    },
+    {
+      "name": "5a. Buscar por nombre - Djokovic",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/Novak Djokovic", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "Novak Djokovic"] } }
+    },
+    {
+      "name": "5b. Buscar por nombre - no existe",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/Juan Martin Del Potro", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "Juan Martin Del Potro"] } }
+    },
+    {
+      "name": "6. Jugadores agrupados por pais",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/grouped", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "grouped"] } }
+    },
+    {
+      "name": "7. Jugador mas joven activo",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/youngest", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "youngest"] } }
+    },
+    {
+      "name": "8. Puntos totales por pais",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/points-by-country", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "points-by-country"] } }
+    },
+    {
+      "name": "9. Todos los activos tienen mas de 1000 puntos",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/all-above-1000", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "all-above-1000"] } }
+    },
+    {
+      "name": "10. Ningun activo tiene 0 puntos",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/none-zero-points", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "none-zero-points"] } }
+    },
+    {
+      "name": "11. Jugador con mas puntos (activo o no)",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/most-points", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "most-points"] } }
+    },
+    {
+      "name": "12. Nombres activos en mayusculas ordenados",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/names-sorted", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "names-sorted"] } }
+    },
+    {
+      "name": "13. Cantidad de jugadores por pais",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/count-by-country", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "count-by-country"] } }
+    },
+    {
+      "name": "14. Jugador mas viejo activo",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/oldest", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "oldest"] } }
+    },
+    {
+      "name": "15. Paises con mas de un jugador activo",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/countries-multiple-active", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "countries-multiple-active"] } }
+    },
+    {
+      "name": "16a. Activos sobre 5000 puntos, top 3",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/above-points?minPoints=5000&limit=3", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "above-points"], "query": [{ "key": "minPoints", "value": "5000" }, { "key": "limit", "value": "3" }] } }
+    },
+    {
+      "name": "16b. Activos sobre 3000 puntos, top 5",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/above-points?minPoints=3000&limit=5", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "above-points"], "query": [{ "key": "minPoints", "value": "3000" }, { "key": "limit", "value": "5" }] } }
+    }
+  ]
+}
