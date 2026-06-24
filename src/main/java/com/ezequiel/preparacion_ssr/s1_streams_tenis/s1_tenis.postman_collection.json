@@ -30,11 +30,11 @@
     },
     {
       "name": "5a. Buscar por nombre - Djokovic",
-      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/Novak Djokovic", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "Novak Djokovic"] } }
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/by-name/Novak Djokovic", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "by-name", "Novak Djokovic"] } }
     },
     {
       "name": "5b. Buscar por nombre - no existe",
-      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/Juan Martin Del Potro", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "Juan Martin Del Potro"] } }
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/by-name/Juan Martin Del Potro", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "by-name", "Juan Martin Del Potro"] } }
     },
     {
       "name": "6. Jugadores agrupados por pais",
@@ -83,6 +83,46 @@
     {
       "name": "16b. Activos sobre 3000 puntos, top 5",
       "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/above-points?minPoints=3000&limit=5", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "above-points"], "query": [{ "key": "minPoints", "value": "3000" }, { "key": "limit", "value": "5" }] } }
+    },
+    {
+      "name": "17. Nombres de activos en un String (joining)",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/names-joined", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "names-joined"] } }
+    },
+    {
+      "name": "18. Estadisticas de puntos activos (summarizingLong)",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/points-stats", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "points-stats"] } }
+    },
+    {
+      "name": "19a. Particion por puntos - threshold 5000 (partitioningBy)",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/partition-by-points?threshold=5000", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "partition-by-points"], "query": [{ "key": "threshold", "value": "5000" }] } }
+    },
+    {
+      "name": "19b. Particion por puntos - threshold imposible 99999",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/partition-by-points?threshold=99999", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "partition-by-points"], "query": [{ "key": "threshold", "value": "99999" }] } }
+    },
+    {
+      "name": "20. Suma total de puntos (reduce)",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/total-points", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "total-points"] } }
+    },
+    {
+      "name": "21. Paises sin repetir (distinct)",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/countries", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "countries"] } }
+    },
+    {
+      "name": "22a. Ranking top 3 (IntStream)",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/ranking/3", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "ranking", "3"] } }
+    },
+    {
+      "name": "22b. Ranking top 10",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/ranking/10", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "ranking", "10"] } }
+    },
+    {
+      "name": "23. Jugador con mas y menos puntos (teeing)",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/extremes", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "extremes"] } }
+    },
+    {
+      "name": "24. Titulos sin repetir y ordenados (flatMap)",
+      "request": { "method": "GET", "url": { "raw": "http://localhost:8080/api/s1/players/titles", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "s1", "players", "titles"] } }
     }
   ]
 }

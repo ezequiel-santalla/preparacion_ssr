@@ -4,12 +4,14 @@ import com.ezequiel.preparacion_ssr.s1_streams_tenis.enums.Country;
 import com.ezequiel.preparacion_ssr.s1_streams_tenis.model.Player;
 import com.ezequiel.preparacion_ssr.s1_streams_tenis.repository.PlayerRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class DataLoader implements CommandLineRunner {
@@ -18,17 +20,42 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        if (playerRepository.count() > 0) {
+            return;
+        }
+
         playerRepository.saveAll(List.of(
-                Player.builder().name("Novak Djokovic").country(Country.SERBIA).atpPoints(9860L).birthDate(LocalDate.of(1987, 5, 22)).isActive(true).build(),
-                Player.builder().name("Carlos Alcaraz").country(Country.SPAIN).atpPoints(8855L).birthDate(LocalDate.of(2003, 5, 5)).isActive(true).build(),
-                Player.builder().name("Jannik Sinner").country(Country.ITALY).atpPoints(8270L).birthDate(LocalDate.of(2001, 8, 16)).isActive(true).build(),
-                Player.builder().name("Daniil Medvedev").country(Country.RUSSIA).atpPoints(6155L).birthDate(LocalDate.of(1996, 2, 11)).isActive(true).build(),
-                Player.builder().name("Alexander Zverev").country(Country.GERMANY).atpPoints(5765L).birthDate(LocalDate.of(1997, 4, 20)).isActive(true).build(),
-                Player.builder().name("Andrey Rublev").country(Country.RUSSIA).atpPoints(4805L).birthDate(LocalDate.of(1997, 10, 20)).isActive(true).build(),
-                Player.builder().name("Holger Rune").country(Country.DENMARK).atpPoints(3760L).birthDate(LocalDate.of(2003, 4, 29)).isActive(true).build(),
-                Player.builder().name("Stefanos Tsitsipas").country(Country.GREECE).atpPoints(3570L).birthDate(LocalDate.of(1998, 8, 12)).isActive(false).build(),
-                Player.builder().name("Rafael Nadal").country(Country.SPAIN).atpPoints(100L).birthDate(LocalDate.of(1986, 6, 3)).isActive(false).build(),
-                Player.builder().name("Roger Federer").country(Country.SWITZERLAND).atpPoints(0L).birthDate(LocalDate.of(1981, 8, 8)).isActive(false).build()
+                player("Novak Djokovic", Country.SERBIA, 9860L, LocalDate.of(1987, 5, 22), true,
+                        "Australian Open", "Wimbledon", "Roland Garros", "US Open"),
+                player("Carlos Alcaraz", Country.SPAIN, 8855L, LocalDate.of(2003, 5, 5), true,
+                        "US Open", "Wimbledon", "Roland Garros"),
+                player("Jannik Sinner", Country.ITALY, 8270L, LocalDate.of(2001, 8, 16), true,
+                        "Australian Open", "US Open"),
+                player("Daniil Medvedev", Country.RUSSIA, 6155L, LocalDate.of(1996, 2, 11), true,
+                        "US Open"),
+                // Sin títulos de Grand Slam: lista vacía a propósito (buen caso borde para flatMap).
+                player("Alexander Zverev", Country.GERMANY, 5765L, LocalDate.of(1997, 4, 20), true),
+                player("Andrey Rublev", Country.RUSSIA, 4805L, LocalDate.of(1997, 10, 20), true),
+                player("Holger Rune", Country.DENMARK, 3760L, LocalDate.of(2003, 4, 29), true),
+                player("Stefanos Tsitsipas", Country.GREECE, 3570L, LocalDate.of(1998, 8, 12), false),
+                player("Rafael Nadal", Country.SPAIN, 100L, LocalDate.of(1986, 6, 3), false,
+                        "Roland Garros", "US Open", "Wimbledon", "Australian Open"),
+                player("Roger Federer", Country.SWITZERLAND, 0L, LocalDate.of(1981, 8, 8), false,
+                        "Wimbledon", "Australian Open", "US Open", "Roland Garros")
         ));
+
+        log.info("DataLoader: {} jugadores cargados.", playerRepository.count());
+    }
+
+    private Player player(String name, Country country, Long atpPoints,
+                          LocalDate birthDate, boolean isActive, String... titles) {
+        return Player.builder()
+                .name(name)
+                .country(country)
+                .atpPoints(atpPoints)
+                .birthDate(birthDate)
+                .isActive(isActive)
+                .titles(List.of(titles))
+                .build();
     }
 }

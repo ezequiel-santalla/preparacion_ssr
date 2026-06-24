@@ -1,7 +1,9 @@
 package com.ezequiel.preparacion_ssr.s1_streams_tenis.service.impl;
 
+import com.ezequiel.preparacion_ssr.s1_streams_tenis.dto.response.PlayerExtremesResponseDto;
 import com.ezequiel.preparacion_ssr.s1_streams_tenis.dto.response.PlayerResponseDto;
 import com.ezequiel.preparacion_ssr.s1_streams_tenis.enums.Country;
+import com.ezequiel.preparacion_ssr.s1_streams_tenis.exception.ResourceNotFoundException;
 import com.ezequiel.preparacion_ssr.s1_streams_tenis.mapper.PlayerMapper;
 import com.ezequiel.preparacion_ssr.s1_streams_tenis.model.Player;
 import com.ezequiel.preparacion_ssr.s1_streams_tenis.repository.PlayerRepository;
@@ -9,11 +11,14 @@ import com.ezequiel.preparacion_ssr.s1_streams_tenis.service.PlayerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.LongSummaryStatistics;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -57,11 +62,13 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public Optional<PlayerResponseDto> getPlayerByName(String name) {
+    public PlayerResponseDto getPlayerByName(String name) {
         return playerRepository.findAll().stream()
                 .filter(player -> player.getName().equalsIgnoreCase(name))
+                .findFirst()
                 .map(playerMapper::toResponseDTO)
-                .findFirst();
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Jugador", name));
     }
 
     @Override
@@ -147,6 +154,77 @@ public class PlayerServiceImpl implements PlayerService {
                 .sorted(Comparator.comparing(Player::getAtpPoints).reversed())
                 .limit(limit)
                 .map(playerMapper::toResponseDTO)
+                .toList();
+    }
+
+    @Override
+    public String getActivePlayerNamesAsString() {
+        return playerRepository.findAll().stream()
+                .filter(Player::getIsActive)
+                .map(Player::getName)
+                .collect(Collectors.joining(", ", "[", "]"));
+    }
+
+    @Override
+    public LongSummaryStatistics getActivePlayersPointsStatistics() {
+        return playerRepository.findAll().stream()
+                .filter(Player::getIsActive)
+                .collect(Collectors.summarizingLong(Player::getAtpPoints));
+    }
+
+    @Override
+    public Map<Boolean, List<PlayerResponseDto>> partitionByPointsThreshold(Long threshold) {
+        return playerRepository.findAll().stream()
+                .map(playerMapper::toResponseDTO)
+                .collect(Collectors.partitioningBy(player -> player.getAtpPoints() > threshold));
+    }
+
+    @Override
+    public Long getTotalPointsWithReduce() {
+        return playerRepository.findAll().stream()
+                .mapToLong(Player::getAtpPoints)
+                .reduce(0L, Long::sum);
+    }
+
+    @Override
+    public List<Country> getDistinctCountries() {
+        return playerRepository.findAll().stream()
+                .map(Player::getCountry)
+                .distinct()
+                .toList();
+    }
+
+    @Override
+    public List<String> getRanking(int n) {
+        List<Player> top = playerRepository.findAll().stream()
+                .sorted(Comparator.comparingLong(Player::getAtpPoints).reversed())
+                .limit(n)
+                .toList();
+
+        return IntStream.range(0, top.size())
+                .mapToObj(i -> "%d. %s - %d pts".formatted(i + 1, top.get(i).getName(), top.get(i).getAtpPoints()))
+                .toList();
+    }
+
+    @Override
+    public PlayerExtremesResponseDto getTopAndBottomScorer() {
+        return playerRepository.findAll().stream()
+                .collect(Collectors.teeing(
+                        Collectors.maxBy(Comparator.comparingLong(Player::getAtpPoints)),
+                        Collectors.minBy(Comparator.comparingLong(Player::getAtpPoints)),
+                        (max, min) -> new PlayerExtremesResponseDto(
+                                max.map(playerMapper::toResponseDTO).orElse(null),
+                                min.map(playerMapper::toResponseDTO).orElse(null)
+                        )));
+    }
+
+    @Override
+    public List<String> getAllDistinctTitlesSorted() {
+        return playerRepository.findAll().stream()
+                .map(Player::getTitles)
+                .flatMap(List::stream)
+                .distinct()
+                .sorted()
                 .toList();
     }
 }

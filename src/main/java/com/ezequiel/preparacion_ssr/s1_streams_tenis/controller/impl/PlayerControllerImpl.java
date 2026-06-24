@@ -1,10 +1,12 @@
 package com.ezequiel.preparacion_ssr.s1_streams_tenis.controller.impl;
 
 import com.ezequiel.preparacion_ssr.s1_streams_tenis.controller.PlayerController;
+import com.ezequiel.preparacion_ssr.s1_streams_tenis.dto.response.PlayerExtremesResponseDto;
 import com.ezequiel.preparacion_ssr.s1_streams_tenis.dto.response.PlayerResponseDto;
 import com.ezequiel.preparacion_ssr.s1_streams_tenis.enums.Country;
 import com.ezequiel.preparacion_ssr.s1_streams_tenis.service.PlayerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.LongSummaryStatistics;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/s1/players")
@@ -47,9 +49,9 @@ public class PlayerControllerImpl implements PlayerController {
     }
 
     @Override
-    @GetMapping("/{name}")
-    public Optional<PlayerResponseDto> getPlayerByName(@PathVariable String name) {
-        return playerService.getPlayerByName(name);
+    @GetMapping("/by-name/{name}")
+    public ResponseEntity<PlayerResponseDto> getPlayerByName(@PathVariable String name) {
+        return ResponseEntity.ok(playerService.getPlayerByName(name));
     }
 
     @Override
@@ -60,8 +62,10 @@ public class PlayerControllerImpl implements PlayerController {
 
     @Override
     @GetMapping("/youngest")
-    public Optional<PlayerResponseDto> getYoungestActivePlayer() {
-        return playerService.getYoungestActivePlayer();
+    public ResponseEntity<PlayerResponseDto> getYoungestActivePlayer() {
+        return playerService.getYoungestActivePlayer()
+                .map(ResponseEntity::ok)                                  // 200 con body
+                .orElseGet(() -> ResponseEntity.noContent().build());     // 204 si vacío
     }
 
     @Override
@@ -84,8 +88,10 @@ public class PlayerControllerImpl implements PlayerController {
 
     @Override
     @GetMapping("/most-points")
-    public Optional<PlayerResponseDto> getPlayerWithMostPoints() {
-        return playerService.getPlayerWithMostPoints();
+    public ResponseEntity<PlayerResponseDto> getPlayerWithMostPoints() {
+        return playerService.getPlayerWithMostPoints()
+                .map(ResponseEntity::ok)                                  // 200 con body
+                .orElseGet(() -> ResponseEntity.noContent().build());     // 204 si vacío
     }
 
     @Override
@@ -102,8 +108,10 @@ public class PlayerControllerImpl implements PlayerController {
 
     @Override
     @GetMapping("/oldest")
-    public Optional<PlayerResponseDto> getOldestActivePlayer() {
-        return playerService.getOldestActivePlayer();
+    public ResponseEntity<PlayerResponseDto> getOldestActivePlayer() {
+        return playerService.getOldestActivePlayer()
+                .map(ResponseEntity::ok)                                  // 200 con body
+                .orElseGet(() -> ResponseEntity.noContent().build());     // 204 si vacío
     }
 
     @Override
@@ -118,5 +126,54 @@ public class PlayerControllerImpl implements PlayerController {
             @RequestParam Long minPoints,
             @RequestParam int limit) {
         return playerService.getActivePlayersAbovePointsLimit(minPoints, limit);
+    }
+
+    @Override
+    @GetMapping("/names-joined")
+    public String getActivePlayerNamesAsString() {
+        return playerService.getActivePlayerNamesAsString();
+    }
+
+    @Override
+    @GetMapping("/points-stats")
+    public LongSummaryStatistics getActivePlayersPointsStatistics() {
+        return playerService.getActivePlayersPointsStatistics();
+    }
+
+    @Override
+    @GetMapping("/partition-by-points")
+    public Map<Boolean, List<PlayerResponseDto>> partitionByPointsThreshold(
+            @RequestParam Long threshold) {
+        return playerService.partitionByPointsThreshold(threshold);
+    }
+
+    @Override
+    @GetMapping("/total-points")
+    public Long getTotalPointsWithReduce() {
+        return playerService.getTotalPointsWithReduce();
+    }
+
+    @Override
+    @GetMapping("/countries")
+    public List<Country> getDistinctCountries() {
+        return playerService.getDistinctCountries();
+    }
+
+    @Override
+    @GetMapping("/ranking/{n}")
+    public List<String> getRanking(@PathVariable int n) {
+        return playerService.getRanking(n);
+    }
+
+    @Override
+    @GetMapping("/extremes")
+    public PlayerExtremesResponseDto getTopAndBottomScorer() {
+        return playerService.getTopAndBottomScorer();
+    }
+
+    @Override
+    @GetMapping("/titles")
+    public List<String> getAllDistinctTitlesSorted() {
+        return playerService.getAllDistinctTitlesSorted();
     }
 }
