@@ -89,8 +89,14 @@ Lo que conviene dominar al cerrar cada semana.
 - [x] `mapToLong`/`average`, `findFirst`, `max`/`min` con `Comparator`
 - [x] `groupingBy` + downstream (`counting`, `summingLong`, `mapping`)
 - [x] `allMatch` / `noneMatch`, grouping anidado
-- [ ] Pendiente de práctica: `partitioningBy`, `flatMap`, `teeing`,
-      `summarizingLong` / `DoubleSummaryStatistics`, `Collectors.joining`
+- [x] `Collectors.joining`, `summarizingLong` (`LongSummaryStatistics`)
+- [x] `partitioningBy`, `reduce` (2 y 3 args), `distinct`
+- [x] `IntStream.range` + `mapToObj` (numeración de ranking)
+- [x] `teeing` (combinar dos collectors en una pasada), `flatMap` (aplanar `titles`)
+- [x] `Optional` encadenado (`map` + `orElseThrow` / `orElseGet`)
+- [x] Interfaces funcionales (`Function`, `Predicate`, `Supplier`, `BinaryOperator`...)
+- [x] Extras: persistencia (`@ElementCollection`, `@Enumerated`), ruteo sin colisiones,
+      manejo de errores (excepción propia + `@RestControllerAdvice` + `ResponseEntity`)
 
 ### S2 — OOP + SOLID 🚗
 - [ ] Encapsulamiento, herencia, polimorfismo, abstracción
